@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>MarketPro | Marketplace Profissional</title>
+<title>MarketPro | Marketplace Completo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -23,9 +23,7 @@ header button{
 .menu-btn{display:none;font-size:22px;cursor:pointer}
 
 /* MOBILE MENU */
-nav{
-    display:flex;gap:10px
-}
+nav{display:flex;gap:8px}
 @media(max-width:768px){
     nav{display:none;flex-direction:column;background:#111827;padding:10px}
     nav.show{display:flex}
@@ -38,6 +36,21 @@ nav{
     color:white;text-align:center;padding:40px 15px
 }
 .container{max-width:1200px;margin:auto;padding:20px}
+
+/* FORMS */
+.modal{
+    display:none;position:fixed;top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,.6);
+    justify-content:center;align-items:center
+}
+.modal-content{
+    background:white;padding:20px;border-radius:10px;
+    width:90%;max-width:350px
+}
+.modal-content input, .modal-content button{
+    width:100%;padding:10px;margin:6px 0
+}
 
 /* ADMIN */
 .admin{
@@ -78,11 +91,11 @@ nav{
 .delete{background:#ef4444;color:white}
 
 /* CART */
-.cart{
-    background:white;padding:15px;border-radius:10px;margin-top:30px
+.cart, .history{
+    background:white;padding:15px;border-radius:10px;margin-top:25px
 }
 .cart-item{
-    display:flex;justify-content:space-between;margin:8px 0
+    display:flex;justify-content:space-between;margin:6px 0
 }
 
 /* PAGINATION */
@@ -102,14 +115,15 @@ nav{
     <h1>MarketPro</h1>
     <div class="menu-btn" onclick="toggleMenu()">☰</div>
     <nav id="menu">
-        <button onclick="loginAdmin()">Admin</button>
+        <button onclick="openLogin()">Login</button>
+        <button onclick="openRegister()">Cadastrar</button>
         <button onclick="logout()">Sair</button>
     </nav>
 </header>
 
 <section class="hero">
 <h2>Marketplace Profissional</h2>
-<p>CRUD • Carrinho • Checkout • Responsivo</p>
+<p>Login • Carrinho • Histórico • Admin</p>
 </section>
 
 <div class="container">
@@ -146,55 +160,103 @@ nav{
 <button class="buy" onclick="checkout()">Finalizar Compra</button>
 </div>
 
+<!-- HISTORY -->
+<div class="history">
+<h3>Histórico de Compras</h3>
+<div id="historico"></div>
+</div>
+
+</div>
+
+<!-- LOGIN -->
+<div class="modal" id="loginModal">
+<div class="modal-content">
+<h3>Login</h3>
+<input id="loginEmail" placeholder="Email">
+<input id="loginSenha" type="password" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+</div>
+</div>
+
+<!-- REGISTER -->
+<div class="modal" id="registerModal">
+<div class="modal-content">
+<h3>Cadastro</h3>
+<input id="regNome" placeholder="Nome">
+<input id="regEmail" placeholder="Email">
+<input id="regSenha" type="password" placeholder="Senha">
+<button onclick="register()">Cadastrar</button>
+</div>
 </div>
 
 <script>
 let produtos=JSON.parse(localStorage.produtos||"[]");
+let usuarios=JSON.parse(localStorage.usuarios||"[]");
+let compras=JSON.parse(localStorage.compras||"[]");
+let usuarioLogado=JSON.parse(localStorage.usuarioLogado||"null");
 let carrinho=[];
-let usuarioLogado=null;
 let editIndex=null;
 let paginaAtual=1;
 const porPagina=6;
 let produtosFiltrados=[...produtos];
 
 /* MENU */
-function toggleMenu(){
-    menu.classList.toggle("show");
+function toggleMenu(){menu.classList.toggle("show")}
+
+/* MODALS */
+function openLogin(){loginModal.style.display="flex"}
+function openRegister(){registerModal.style.display="flex"}
+window.onclick=e=>{
+    if(e.target.classList.contains("modal"))e.target.style.display="none";
 }
 
-/* ADMIN */
-function loginAdmin(){
-    usuarioLogado={tipo:"admin"};
-    adminPanel.style.display="block";
+/* AUTH */
+function register(){
+    usuarios.push({
+        nome:regNome.value,
+        email:regEmail.value,
+        senha:regSenha.value,
+        tipo:"cliente"
+    });
+    localStorage.usuarios=JSON.stringify(usuarios);
+    alert("Cadastro realizado!");
+    registerModal.style.display="none";
+}
+function login(){
+    const u=usuarios.find(u=>u.email===loginEmail.value && u.senha===loginSenha.value);
+    if(!u)return alert("Dados inválidos");
+    usuarioLogado=u;
+    localStorage.usuarioLogado=JSON.stringify(u);
+    loginModal.style.display="none";
+    adminPanel.style.display=u.tipo==="admin"?"block":"none";
     renderProdutos();
+    renderHistorico();
 }
 function logout(){
     usuarioLogado=null;
+    localStorage.removeItem("usuarioLogado");
     adminPanel.style.display="none";
-    renderProdutos();
 }
 
 /* IMAGE */
 function lerImagem(file,cb){
-    const reader=new FileReader();
-    reader.onload=e=>cb(e.target.result);
-    reader.readAsDataURL(file);
+    const r=new FileReader();
+    r.onload=e=>cb(e.target.result);
+    r.readAsDataURL(file);
 }
 
 /* CRUD */
 function salvarProduto(){
-    const salvar=(img)=>{
+    const salvar=img=>{
         const p={nome:pNome.value,preco:pPreco.value,categoria:pCategoria.value,imagem:img};
         editIndex==null?produtos.push(p):produtos[editIndex]=p;
         localStorage.produtos=JSON.stringify(produtos);
         editIndex=null;
-        atualizarCategorias();
-        aplicarFiltros();
+        atualizarCategorias();aplicarFiltros();
     }
     if(pImagem.files[0])lerImagem(pImagem.files[0],salvar);
     else salvar(produtos[editIndex]?.imagem||"");
 }
-
 function editProduto(i){
     editIndex=i;
     pNome.value=produtos[i].nome;
@@ -214,11 +276,9 @@ function atualizarCategorias(){
     .forEach(c=>filtroCategoria.innerHTML+=`<option>${c}</option>`);
 }
 function aplicarFiltros(){
-    const txt=busca.value.toLowerCase();
-    const cat=filtroCategoria.value;
     produtosFiltrados=produtos.filter(p=>
-        p.nome.toLowerCase().includes(txt) &&
-        (cat===""||p.categoria===cat)
+        p.nome.toLowerCase().includes(busca.value.toLowerCase()) &&
+        (filtroCategoria.value===""||p.categoria===filtroCategoria.value)
     );
     paginaAtual=1;
     renderProdutos();
@@ -227,8 +287,7 @@ function aplicarFiltros(){
 /* RENDER */
 function renderProdutos(){
     listaProdutos.innerHTML="";
-    const inicio=(paginaAtual-1)*porPagina;
-    produtosFiltrados.slice(inicio,inicio+porPagina)
+    produtosFiltrados.slice((paginaAtual-1)*porPagina,paginaAtual*porPagina)
     .forEach((p,i)=>{
         listaProdutos.innerHTML+=`
         <div class="card">
@@ -236,50 +295,60 @@ function renderProdutos(){
             <h4>${p.nome}</h4>
             <p>${p.categoria}</p>
             <span>R$ ${p.preco}</span>
-            <button class="buy" onclick="addCarrinho(${i+inicio})">Comprar</button>
+            <button class="buy" onclick="addCarrinho(${i})">Comprar</button>
             ${usuarioLogado?.tipo==="admin"?`
-            <button class="edit" onclick="editProduto(${i+inicio})">Editar</button>
-            <button class="delete" onclick="deleteProduto(${i+inicio})">Excluir</button>`:""}
+            <button class="edit" onclick="editProduto(${i})">Editar</button>
+            <button class="delete" onclick="deleteProduto(${i})">Excluir</button>`:""}
         </div>`;
     });
     renderPaginacao();
 }
-
-/* PAGINATION */
 function renderPaginacao(){
     paginacao.innerHTML="";
-    const total=Math.ceil(produtosFiltrados.length/porPagina);
-    for(let i=1;i<=total;i++){
+    for(let i=1;i<=Math.ceil(produtosFiltrados.length/porPagina);i++)
         paginacao.innerHTML+=`<button onclick="paginaAtual=${i};renderProdutos()">${i}</button>`;
-    }
 }
 
 /* CART */
-function addCarrinho(i){
-    carrinho.push(produtos[i]);
-    renderCarrinho();
-}
+function addCarrinho(i){carrinho.push(produtosFiltrados[i]);renderCarrinho()}
 function renderCarrinho(){
     itensCarrinho.innerHTML="";
     let total=0;
     carrinho.forEach(p=>{
         total+=Number(p.preco);
-        itensCarrinho.innerHTML+=`
-        <div class="cart-item">
-            <span>${p.nome}</span>
-            <span>R$ ${p.preco}</span>
-        </div>`;
+        itensCarrinho.innerHTML+=`<div class="cart-item"><span>${p.nome}</span><span>R$ ${p.preco}</span></div>`;
     });
     document.getElementById("total").innerText=total.toFixed(2);
 }
 function checkout(){
-    alert("Compra finalizada com sucesso!");
-    carrinho=[];
-    renderCarrinho();
+    if(!usuarioLogado)return alert("Faça login para comprar");
+    compras.push({
+        email:usuarioLogado.email,
+        data:new Date().toLocaleString(),
+        itens:[...carrinho],
+        total:document.getElementById("total").innerText
+    });
+    localStorage.compras=JSON.stringify(compras);
+    carrinho=[];renderCarrinho();renderHistorico();
+    alert("Compra realizada!");
+}
+
+/* HISTORY */
+function renderHistorico(){
+    historico.innerHTML="";
+    compras.filter(c=>c.email===usuarioLogado?.email)
+    .forEach(c=>{
+        historico.innerHTML+=`
+        <p><strong>${c.data}</strong> - R$ ${c.total}</p>`;
+    });
 }
 
 atualizarCategorias();
 aplicarFiltros();
+if(usuarioLogado){
+    adminPanel.style.display=usuarioLogado.tipo==="admin"?"block":"none";
+    renderHistorico();
+}
 </script>
 
 </body>
