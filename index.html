@@ -1,152 +1,286 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projecto Tino</title>
+<meta charset="UTF-8">
+<title>MarketPro | Marketplace Profissional</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
+body{background:#f4f6f8}
 
-    body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-    }
+/* HEADER */
+header{
+    background:#111827;color:white;
+    padding:15px 20px;
+    display:flex;justify-content:space-between;align-items:center
+}
+header h1{font-size:20px}
+header button{
+    background:#2563eb;border:none;color:white;
+    padding:8px 12px;border-radius:6px;margin-left:5px
+}
+.menu-btn{display:none;font-size:22px;cursor:pointer}
 
-    header {
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+/* MOBILE MENU */
+nav{
+    display:flex;gap:10px
+}
+@media(max-width:768px){
+    nav{display:none;flex-direction:column;background:#111827;padding:10px}
+    nav.show{display:flex}
+    .menu-btn{display:block}
+}
 
-    header h1 {
-      font-size: 24px;
-    }
+/* HERO */
+.hero{
+    background:linear-gradient(120deg,#2563eb,#1e40af);
+    color:white;text-align:center;padding:40px 15px
+}
+.container{max-width:1200px;margin:auto;padding:20px}
 
-    header a {
-      color: #fff;
-      text-decoration: none;
-      border: 1px solid #fff;
-      padding: 8px 16px;
-      border-radius: 20px;
-    }
+/* ADMIN */
+.admin{
+    display:none;background:white;
+    padding:20px;border-radius:10px;margin-bottom:25px
+}
+.admin input,.admin button{
+    width:100%;padding:10px;margin:6px 0
+}
 
-    .hero {
-      height: 80vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
+/* FILTERS */
+.filters{
+    display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px
+}
+.filters input,.filters select{
+    padding:8px;border-radius:5px;border:1px solid #ccc
+}
 
-    .hero h2 {
-      font-size: 42px;
-      margin-bottom: 15px;
-    }
+/* PRODUCTS */
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px
+}
+.card{
+    background:white;border-radius:12px;padding:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.1)
+}
+.card img{
+    width:100%;height:160px;object-fit:cover;border-radius:8px
+}
+.card span{color:#2563eb;font-weight:bold}
+.card button{
+    width:100%;margin-top:5px;padding:7px;border:none;border-radius:6px
+}
+.buy{background:#22c55e;color:white}
+.edit{background:#f59e0b;color:white}
+.delete{background:#ef4444;color:white}
 
-    .hero p {
-      font-size: 18px;
-      max-width: 600px;
-      margin-bottom: 30px;
-      opacity: 0.9;
-    }
+/* CART */
+.cart{
+    background:white;padding:15px;border-radius:10px;margin-top:30px
+}
+.cart-item{
+    display:flex;justify-content:space-between;margin:8px 0
+}
 
-    .hero button {
-      background: #00c6ff;
-      border: none;
-      padding: 15px 30px;
-      font-size: 16px;
-      border-radius: 30px;
-      cursor: pointer;
-      color: #000;
-      font-weight: bold;
-    }
-
-    .hero button:hover {
-      background: #00a3d9;
-    }
-
-    section {
-      padding: 60px 20px;
-      background: #fff;
-      color: #000;
-      text-align: center;
-    }
-
-    section h3 {
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .cards {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .card {
-      background: #f4f4f4;
-      padding: 30px;
-      width: 280px;
-      border-radius: 15px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #111;
-      font-size: 14px;
-    }
-  </style>
+/* PAGINATION */
+.pagination{
+    display:flex;gap:8px;justify-content:center;margin:20px 0
+}
+.pagination button{
+    background:#2563eb;color:white;border:none;
+    padding:6px 12px;border-radius:5px
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>Projecto Tino</h1>
-    <a href="#">Contato</a>
-  </header>
+<header>
+    <h1>MarketPro</h1>
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <nav id="menu">
+        <button onclick="loginAdmin()">Admin</button>
+        <button onclick="logout()">Sair</button>
+    </nav>
+</header>
 
-  <div class="hero">
-    <h2>Bem-vindo ao meu Projecto</h2>
-    <p>Esta é uma landing page simples, moderna e pronta para publicar no GitHub Pages.</p>
-    <button>Começar Agora</button>
-  </div>
+<section class="hero">
+<h2>Marketplace Profissional</h2>
+<p>CRUD • Carrinho • Checkout • Responsivo</p>
+</section>
 
-  <section>
-    <h3>O que você vai encontrar</h3>
+<div class="container">
 
-    <div class="cards">
-      <div class="card">
-        <h4>🚀 Rápido</h4>
-        <p>Carregamento leve e simples.</p>
-      </div>
+<!-- ADMIN -->
+<div class="admin" id="adminPanel">
+<h3>Painel Admin</h3>
+<input id="pNome" placeholder="Nome do produto">
+<input id="pPreco" placeholder="Preço">
+<input id="pCategoria" placeholder="Categoria">
+<input type="file" id="pImagem">
+<button onclick="salvarProduto()">Salvar Produto</button>
+</div>
 
-      <div class="card">
-        <h4>📱 Responsivo</h4>
-        <p>Funciona no celular e no computador.</p>
-      </div>
+<!-- FILTERS -->
+<div class="filters">
+<input id="busca" placeholder="Buscar produto" oninput="aplicarFiltros()">
+<select id="filtroCategoria" onchange="aplicarFiltros()">
+<option value="">Todas categorias</option>
+</select>
+</div>
 
-      <div class="card">
-        <h4>💻 GitHub Pages</h4>
-        <p>Pronto para publicar gratuitamente.</p>
-      </div>
-    </div>
-  </section>
+<!-- PRODUCTS -->
+<div class="products" id="listaProdutos"></div>
 
-  <footer>
-    © 2025 - Projecto Tino | Criado por você
-  </footer>
+<!-- PAGINATION -->
+<div class="pagination" id="paginacao"></div>
+
+<!-- CART -->
+<div class="cart">
+<h3>Carrinho</h3>
+<div id="itensCarrinho"></div>
+<p><strong>Total: R$ <span id="total">0</span></strong></p>
+<button class="buy" onclick="checkout()">Finalizar Compra</button>
+</div>
+
+</div>
+
+<script>
+let produtos=JSON.parse(localStorage.produtos||"[]");
+let carrinho=[];
+let usuarioLogado=null;
+let editIndex=null;
+let paginaAtual=1;
+const porPagina=6;
+let produtosFiltrados=[...produtos];
+
+/* MENU */
+function toggleMenu(){
+    menu.classList.toggle("show");
+}
+
+/* ADMIN */
+function loginAdmin(){
+    usuarioLogado={tipo:"admin"};
+    adminPanel.style.display="block";
+    renderProdutos();
+}
+function logout(){
+    usuarioLogado=null;
+    adminPanel.style.display="none";
+    renderProdutos();
+}
+
+/* IMAGE */
+function lerImagem(file,cb){
+    const reader=new FileReader();
+    reader.onload=e=>cb(e.target.result);
+    reader.readAsDataURL(file);
+}
+
+/* CRUD */
+function salvarProduto(){
+    const salvar=(img)=>{
+        const p={nome:pNome.value,preco:pPreco.value,categoria:pCategoria.value,imagem:img};
+        editIndex==null?produtos.push(p):produtos[editIndex]=p;
+        localStorage.produtos=JSON.stringify(produtos);
+        editIndex=null;
+        atualizarCategorias();
+        aplicarFiltros();
+    }
+    if(pImagem.files[0])lerImagem(pImagem.files[0],salvar);
+    else salvar(produtos[editIndex]?.imagem||"");
+}
+
+function editProduto(i){
+    editIndex=i;
+    pNome.value=produtos[i].nome;
+    pPreco.value=produtos[i].preco;
+    pCategoria.value=produtos[i].categoria;
+}
+function deleteProduto(i){
+    produtos.splice(i,1);
+    localStorage.produtos=JSON.stringify(produtos);
+    aplicarFiltros();
+}
+
+/* FILTER */
+function atualizarCategorias(){
+    filtroCategoria.innerHTML='<option value="">Todas categorias</option>';
+    [...new Set(produtos.map(p=>p.categoria))]
+    .forEach(c=>filtroCategoria.innerHTML+=`<option>${c}</option>`);
+}
+function aplicarFiltros(){
+    const txt=busca.value.toLowerCase();
+    const cat=filtroCategoria.value;
+    produtosFiltrados=produtos.filter(p=>
+        p.nome.toLowerCase().includes(txt) &&
+        (cat===""||p.categoria===cat)
+    );
+    paginaAtual=1;
+    renderProdutos();
+}
+
+/* RENDER */
+function renderProdutos(){
+    listaProdutos.innerHTML="";
+    const inicio=(paginaAtual-1)*porPagina;
+    produtosFiltrados.slice(inicio,inicio+porPagina)
+    .forEach((p,i)=>{
+        listaProdutos.innerHTML+=`
+        <div class="card">
+            <img src="${p.imagem||'https://via.placeholder.com/300'}">
+            <h4>${p.nome}</h4>
+            <p>${p.categoria}</p>
+            <span>R$ ${p.preco}</span>
+            <button class="buy" onclick="addCarrinho(${i+inicio})">Comprar</button>
+            ${usuarioLogado?.tipo==="admin"?`
+            <button class="edit" onclick="editProduto(${i+inicio})">Editar</button>
+            <button class="delete" onclick="deleteProduto(${i+inicio})">Excluir</button>`:""}
+        </div>`;
+    });
+    renderPaginacao();
+}
+
+/* PAGINATION */
+function renderPaginacao(){
+    paginacao.innerHTML="";
+    const total=Math.ceil(produtosFiltrados.length/porPagina);
+    for(let i=1;i<=total;i++){
+        paginacao.innerHTML+=`<button onclick="paginaAtual=${i};renderProdutos()">${i}</button>`;
+    }
+}
+
+/* CART */
+function addCarrinho(i){
+    carrinho.push(produtos[i]);
+    renderCarrinho();
+}
+function renderCarrinho(){
+    itensCarrinho.innerHTML="";
+    let total=0;
+    carrinho.forEach(p=>{
+        total+=Number(p.preco);
+        itensCarrinho.innerHTML+=`
+        <div class="cart-item">
+            <span>${p.nome}</span>
+            <span>R$ ${p.preco}</span>
+        </div>`;
+    });
+    document.getElementById("total").innerText=total.toFixed(2);
+}
+function checkout(){
+    alert("Compra finalizada com sucesso!");
+    carrinho=[];
+    renderCarrinho();
+}
+
+atualizarCategorias();
+aplicarFiltros();
+</script>
 
 </body>
 </html>
-  
