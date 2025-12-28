@@ -2,128 +2,98 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>MarketPro | Marketplace Completo</title>
+<title>MarketPro | Marketplace Moderno</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
+/* ===== RESET ===== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
 body{background:#f4f6f8}
 
-/* HEADER */
+/* ===== HEADER ===== */
 header{
     background:#111827;color:white;
     padding:15px 20px;
-    display:flex;justify-content:space-between;align-items:center
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;position:relative
 }
 header h1{font-size:20px}
-header button{
-    background:#2563eb;border:none;color:white;
-    padding:8px 12px;border-radius:6px;margin-left:5px
-}
-.menu-btn{display:none;font-size:22px;cursor:pointer}
+.menu-btn{display:block;font-size:22px;cursor:pointer;z-index:2}
+nav{display:none;flex-direction:column;width:100%;position:absolute;top:60px;left:0;background:#111827;transition:0.3s}
+nav.show{display:flex}
+nav button{margin:3px 10px;padding:8px 10px;border:none;border-radius:6px;background:#2563eb;color:white;cursor:pointer}
 
-/* MOBILE MENU */
-nav{display:flex;gap:8px}
-@media(max-width:768px){
-    nav{display:none;flex-direction:column;background:#111827;padding:10px}
-    nav.show{display:flex}
-    .menu-btn{display:block}
+/* CART BADGE */
+#cartBtn{position:relative}
+#cartBadge{
+    position:absolute;
+    top:-5px;right:-10px;
+    background:red;color:white;
+    border-radius:50%;
+    padding:2px 6px;font-size:12px
 }
 
 /* HERO */
-.hero{
-    background:linear-gradient(120deg,#2563eb,#1e40af);
-    color:white;text-align:center;padding:40px 15px
-}
-.container{max-width:1200px;margin:auto;padding:20px}
+.hero{text-align:center;padding:40px 15px;background:linear-gradient(120deg,#2563eb,#1e40af);color:white;transition:0.3s}
 
-/* FORMS */
-.modal{
-    display:none;position:fixed;top:0;left:0;
-    width:100%;height:100%;
-    background:rgba(0,0,0,.6);
-    justify-content:center;align-items:center
-}
-.modal-content{
-    background:white;padding:20px;border-radius:10px;
-    width:90%;max-width:350px
-}
-.modal-content input, .modal-content button{
-    width:100%;padding:10px;margin:6px 0
-}
+/* CONTAINER */
+.container{max-width:1200px;margin:auto;padding:15px}
+
+/* MODALS */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);justify-content:center;align-items:center}
+.modal-content{background:white;padding:20px;border-radius:10px;width:90%;max-width:350px}
+.modal-content input,.modal-content button{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:1px solid #ccc}
+.modal-content button{background:#2563eb;color:white;border:none;cursor:pointer;transition:0.3s}
+.modal-content button:hover{background:#1e40af}
 
 /* ADMIN */
-.admin{
-    display:none;background:white;
-    padding:20px;border-radius:10px;margin-bottom:25px
-}
-.admin input,.admin button{
-    width:100%;padding:10px;margin:6px 0
-}
+.admin{display:none;background:white;padding:20px;border-radius:10px;margin-bottom:25px}
+.admin input,.admin button{width:100%;padding:10px;margin:6px 0;border-radius:6px}
 
 /* FILTERS */
-.filters{
-    display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px
-}
-.filters input,.filters select{
-    padding:8px;border-radius:5px;border:1px solid #ccc
-}
+.filters{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.filters input,.filters select{padding:8px;border-radius:6px;border:1px solid #ccc;width:100%}
 
 /* PRODUCTS */
-.products{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px
-}
-.card{
-    background:white;border-radius:12px;padding:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.1)
-}
-.card img{
-    width:100%;height:160px;object-fit:cover;border-radius:8px
-}
+.products{display:grid;grid-template-columns:1fr;gap:15px}
+.card{background:white;border-radius:12px;padding:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);transition:0.3s}
+.card:hover{transform:scale(1.03);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
 .card span{color:#2563eb;font-weight:bold}
-.card button{
-    width:100%;margin-top:5px;padding:7px;border:none;border-radius:6px
-}
+.card button{width:100%;margin-top:5px;padding:7px;border:none;border-radius:6px;cursor:pointer;transition:0.3s}
 .buy{background:#22c55e;color:white}
 .edit{background:#f59e0b;color:white}
 .delete{background:#ef4444;color:white}
 
-/* CART */
-.cart, .history{
-    background:white;padding:15px;border-radius:10px;margin-top:25px
-}
-.cart-item{
-    display:flex;justify-content:space-between;margin:6px 0
-}
+/* CART / HISTORY */
+.cart, .history{background:white;padding:15px;border-radius:10px;margin-top:20px;transition:0.3s}
+.cart-item{display:flex;justify-content:space-between;margin:5px 0}
 
 /* PAGINATION */
-.pagination{
-    display:flex;gap:8px;justify-content:center;margin:20px 0
-}
-.pagination button{
-    background:#2563eb;color:white;border:none;
-    padding:6px 12px;border-radius:5px
-}
+.pagination{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:15px 0}
+.pagination button{background:#2563eb;color:white;border:none;padding:6px 12px;border-radius:5px;cursor:pointer;transition:0.3s}
+.pagination button:hover{background:#1e40af}
+
+/* RESPONSIVE TABLETS/DESKTOP */
+@media(min-width:600px){.products{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.products{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
-
 <body>
 
 <header>
-    <h1>MarketPro</h1>
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <nav id="menu">
-        <button onclick="openLogin()">Login</button>
-        <button onclick="openRegister()">Cadastrar</button>
-        <button onclick="logout()">Sair</button>
-    </nav>
+<h1>MarketPro</h1>
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+<nav id="menu">
+<button onclick="openLogin()">Login</button>
+<button onclick="openRegister()">Cadastrar</button>
+<button onclick="logout()">Sair</button>
+<button id="cartBtn" onclick="scrollToCart()">Carrinho 🛒 <span id="cartBadge">0</span></button>
+</nav>
 </header>
 
 <section class="hero">
-<h2>Marketplace Profissional</h2>
-<p>Login • Carrinho • Histórico • Admin</p>
+<h2>Marketplace Moderno</h2>
+<p>Login • Carrinho • Histórico • Admin • Mobile Friendly • Animações</p>
 </section>
 
 <div class="container">
@@ -153,7 +123,7 @@ nav{display:flex;gap:8px}
 <div class="pagination" id="paginacao"></div>
 
 <!-- CART -->
-<div class="cart">
+<div class="cart" id="cartSection">
 <h3>Carrinho</h3>
 <div id="itensCarrinho"></div>
 <p><strong>Total: R$ <span id="total">0</span></strong></p>
@@ -161,14 +131,14 @@ nav{display:flex;gap:8px}
 </div>
 
 <!-- HISTORY -->
-<div class="history">
+<div class="history" id="historySection">
 <h3>Histórico de Compras</h3>
 <div id="historico"></div>
 </div>
 
 </div>
 
-<!-- LOGIN -->
+<!-- LOGIN MODAL -->
 <div class="modal" id="loginModal">
 <div class="modal-content">
 <h3>Login</h3>
@@ -178,7 +148,7 @@ nav{display:flex;gap:8px}
 </div>
 </div>
 
-<!-- REGISTER -->
+<!-- REGISTER MODAL -->
 <div class="modal" id="registerModal">
 <div class="modal-content">
 <h3>Cadastro</h3>
@@ -190,6 +160,7 @@ nav{display:flex;gap:8px}
 </div>
 
 <script>
+/* ===== DATA ===== */
 let produtos=JSON.parse(localStorage.produtos||"[]");
 let usuarios=JSON.parse(localStorage.usuarios||"[]");
 let compras=JSON.parse(localStorage.compras||"[]");
@@ -200,156 +171,144 @@ let paginaAtual=1;
 const porPagina=6;
 let produtosFiltrados=[...produtos];
 
-/* MENU */
+/* ===== MENU ===== */
 function toggleMenu(){menu.classList.toggle("show")}
 
-/* MODALS */
+/* ===== SCROLL TO CART ===== */
+function scrollToCart(){cartSection.scrollIntoView({behavior:"smooth"})}
+
+/* ===== MODALS ===== */
 function openLogin(){loginModal.style.display="flex"}
 function openRegister(){registerModal.style.display="flex"}
 window.onclick=e=>{
-    if(e.target.classList.contains("modal"))e.target.style.display="none";
+if(e.target.classList.contains("modal")) e.target.style.display="none";
 }
 
-/* AUTH */
+/* ===== AUTH ===== */
 function register(){
-    usuarios.push({
-        nome:regNome.value,
-        email:regEmail.value,
-        senha:regSenha.value,
-        tipo:"cliente"
-    });
-    localStorage.usuarios=JSON.stringify(usuarios);
-    alert("Cadastro realizado!");
-    registerModal.style.display="none";
+if(!regNome.value||!regEmail.value||!regSenha.value)return alert("Preencha todos os campos");
+if(usuarios.some(u=>u.email===regEmail.value)) return alert("Email já cadastrado");
+usuarios.push({nome:regNome.value,email:regEmail.value,senha:regSenha.value,tipo:"cliente"});
+localStorage.usuarios=JSON.stringify(usuarios);
+alert("Cadastro realizado!");
+registerModal.style.display="none";
 }
 function login(){
-    const u=usuarios.find(u=>u.email===loginEmail.value && u.senha===loginSenha.value);
-    if(!u)return alert("Dados inválidos");
-    usuarioLogado=u;
-    localStorage.usuarioLogado=JSON.stringify(u);
-    loginModal.style.display="none";
-    adminPanel.style.display=u.tipo==="admin"?"block":"none";
-    renderProdutos();
-    renderHistorico();
+const u=usuarios.find(u=>u.email===loginEmail.value && u.senha===loginSenha.value);
+if(!u)return alert("Email ou senha inválidos");
+usuarioLogado=u;
+localStorage.usuarioLogado=JSON.stringify(u);
+loginModal.style.display="none";
+adminPanel.style.display=u.tipo==="admin"?"block":"none";
+renderProdutos();
+renderHistorico();
+renderCarrinho();
+updateCartBadge();
 }
 function logout(){
-    usuarioLogado=null;
-    localStorage.removeItem("usuarioLogado");
-    adminPanel.style.display="none";
+usuarioLogado=null;
+localStorage.removeItem("usuarioLogado");
+adminPanel.style.display="none";
+renderProdutos();
+renderCarrinho();
+updateCartBadge();
 }
 
-/* IMAGE */
+/* ===== IMAGE ===== */
 function lerImagem(file,cb){
-    const r=new FileReader();
-    r.onload=e=>cb(e.target.result);
-    r.readAsDataURL(file);
+const r=new FileReader();
+r.onload=e=>cb(e.target.result);
+r.readAsDataURL(file);
 }
 
-/* CRUD */
+/* ===== CRUD ===== */
 function salvarProduto(){
-    const salvar=img=>{
-        const p={nome:pNome.value,preco:pPreco.value,categoria:pCategoria.value,imagem:img};
-        editIndex==null?produtos.push(p):produtos[editIndex]=p;
-        localStorage.produtos=JSON.stringify(produtos);
-        editIndex=null;
-        atualizarCategorias();aplicarFiltros();
-    }
-    if(pImagem.files[0])lerImagem(pImagem.files[0],salvar);
-    else salvar(produtos[editIndex]?.imagem||"");
+if(!pNome.value||!pPreco.value||!pCategoria.value)return alert("Preencha todos os campos");
+const salvar=img=>{
+const p={nome:pNome.value,preco:pPreco.value,categoria:pCategoria.value,imagem:img};
+editIndex==null?produtos.push(p):produtos[editIndex]=p;
+localStorage.produtos=JSON.stringify(produtos);
+editIndex=null;
+atualizarCategorias();aplicarFiltros();
 }
-function editProduto(i){
-    editIndex=i;
-    pNome.value=produtos[i].nome;
-    pPreco.value=produtos[i].preco;
-    pCategoria.value=produtos[i].categoria;
+if(pImagem.files[0]) lerImagem(pImagem.files[0],salvar);
+else salvar(produtos[editIndex]?.imagem||"");
 }
-function deleteProduto(i){
-    produtos.splice(i,1);
-    localStorage.produtos=JSON.stringify(produtos);
-    aplicarFiltros();
-}
+function editProduto(i){editIndex=i;pNome.value=produtos[i].nome;pPreco.value=produtos[i].preco;pCategoria.value=produtos[i].categoria}
+function deleteProduto(i){produtos.splice(i,1);localStorage.produtos=JSON.stringify(produtos);aplicarFiltros()}
 
-/* FILTER */
+/* ===== FILTER ===== */
 function atualizarCategorias(){
-    filtroCategoria.innerHTML='<option value="">Todas categorias</option>';
-    [...new Set(produtos.map(p=>p.categoria))]
-    .forEach(c=>filtroCategoria.innerHTML+=`<option>${c}</option>`);
+filtroCategoria.innerHTML='<option value="">Todas categorias</option>';
+[...new Set(produtos.map(p=>p.categoria))].forEach(c=>filtroCategoria.innerHTML+=`<option>${c}</option>`);
 }
 function aplicarFiltros(){
-    produtosFiltrados=produtos.filter(p=>
-        p.nome.toLowerCase().includes(busca.value.toLowerCase()) &&
-        (filtroCategoria.value===""||p.categoria===filtroCategoria.value)
-    );
-    paginaAtual=1;
-    renderProdutos();
+produtosFiltrados=produtos.filter(p=>
+p.nome.toLowerCase().includes(busca.value.toLowerCase()) &&
+(filtroCategoria.value===""||p.categoria===filtroCategoria.value)
+);
+paginaAtual=1;
+renderProdutos();
 }
 
-/* RENDER */
+/* ===== RENDER ===== */
 function renderProdutos(){
-    listaProdutos.innerHTML="";
-    produtosFiltrados.slice((paginaAtual-1)*porPagina,paginaAtual*porPagina)
-    .forEach((p,i)=>{
-        listaProdutos.innerHTML+=`
-        <div class="card">
-            <img src="${p.imagem||'https://via.placeholder.com/300'}">
-            <h4>${p.nome}</h4>
-            <p>${p.categoria}</p>
-            <span>R$ ${p.preco}</span>
-            <button class="buy" onclick="addCarrinho(${i})">Comprar</button>
-            ${usuarioLogado?.tipo==="admin"?`
-            <button class="edit" onclick="editProduto(${i})">Editar</button>
-            <button class="delete" onclick="deleteProduto(${i})">Excluir</button>`:""}
-        </div>`;
-    });
-    renderPaginacao();
+listaProdutos.innerHTML="";
+produtosFiltrados.slice((paginaAtual-1)*porPagina,paginaAtual*porPagina).forEach((p,i)=>{
+listaProdutos.innerHTML+=`
+<div class="card">
+<img src="${p.imagem||'https://via.placeholder.com/300'}">
+<h4>${p.nome}</h4>
+<p>${p.categoria}</p>
+<span>R$ ${p.preco}</span>
+<button class="buy" onclick="addCarrinho(${i+(paginaAtual-1)*porPagina})">Comprar</button>
+${usuarioLogado?.tipo==="admin"?`<button class="edit" onclick="editProduto(${i+(paginaAtual-1)*porPagina})">Editar</button>
+<button class="delete" onclick="deleteProduto(${i+(paginaAtual-1)*porPagina})">Excluir</button>`:""}
+</div>`;
+});
+renderPaginacao();
 }
 function renderPaginacao(){
-    paginacao.innerHTML="";
-    for(let i=1;i<=Math.ceil(produtosFiltrados.length/porPagina);i++)
-        paginacao.innerHTML+=`<button onclick="paginaAtual=${i};renderProdutos()">${i}</button>`;
+paginacao.innerHTML="";
+for(let i=1;i<=Math.ceil(produtosFiltrados.length/porPagina);i++)
+paginacao.innerHTML+=`<button onclick="paginaAtual=${i};renderProdutos()">${i}</button>`;
 }
 
-/* CART */
-function addCarrinho(i){carrinho.push(produtosFiltrados[i]);renderCarrinho()}
+/* ===== CART ===== */
+function addCarrinho(i){
+carrinho.push(produtos[i]);
+renderCarrinho();
+updateCartBadge();
+}
 function renderCarrinho(){
-    itensCarrinho.innerHTML="";
-    let total=0;
-    carrinho.forEach(p=>{
-        total+=Number(p.preco);
-        itensCarrinho.innerHTML+=`<div class="cart-item"><span>${p.nome}</span><span>R$ ${p.preco}</span></div>`;
-    });
-    document.getElementById("total").innerText=total.toFixed(2);
+itensCarrinho.innerHTML="";
+let total=0;
+carrinho.forEach(p=>{total+=Number(p.preco);itensCarrinho.innerHTML+=`<div class="cart-item"><span>${p.nome}</span><span>R$ ${p.preco}</span></div>`});
+document.getElementById("total").innerText=total.toFixed(2);
+}
+function updateCartBadge(){
+cartBadge.innerText=carrinho.length;
 }
 function checkout(){
-    if(!usuarioLogado)return alert("Faça login para comprar");
-    compras.push({
-        email:usuarioLogado.email,
-        data:new Date().toLocaleString(),
-        itens:[...carrinho],
-        total:document.getElementById("total").innerText
-    });
-    localStorage.compras=JSON.stringify(compras);
-    carrinho=[];renderCarrinho();renderHistorico();
-    alert("Compra realizada!");
+if(!usuarioLogado)return alert("Faça login para comprar");
+if(carrinho.length===0)return alert("Carrinho vazio");
+compras.push({email:usuarioLogado.email,data:new Date().toLocaleString(),itens:[...carrinho],total:document.getElementById("total").innerText});
+localStorage.compras=JSON.stringify(compras);
+carrinho=[];renderCarrinho();updateCartBadge();renderHistorico();
+alert("Compra finalizada!");
 }
 
-/* HISTORY */
+/* ===== HISTORY ===== */
 function renderHistorico(){
-    historico.innerHTML="";
-    compras.filter(c=>c.email===usuarioLogado?.email)
-    .forEach(c=>{
-        historico.innerHTML+=`
-        <p><strong>${c.data}</strong> - R$ ${c.total}</p>`;
-    });
+historico.innerHTML="";
+compras.filter(c=>c.email===usuarioLogado?.email).forEach(c=>{
+historico.innerHTML+=`<p><strong>${c.data}</strong> - R$ ${c.total}</p>`;
+});
 }
 
-atualizarCategorias();
-aplicarFiltros();
-if(usuarioLogado){
-    adminPanel.style.display=usuarioLogado.tipo==="admin"?"block":"none";
-    renderHistorico();
-}
+/* ===== INIT ===== */
+atualizarCategorias();aplicarFiltros();
+if(usuarioLogado){adminPanel.style.display=usuarioLogado.tipo==="admin"?"block":"none";renderHistorico();renderCarrinho();updateCartBadge();}
 </script>
-
 </body>
 </html>
