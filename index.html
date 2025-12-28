@@ -1,11 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projecto Tino</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+    }
+
+    header {
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 24px;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+
+    .hero {
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero h2 {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      max-width: 600px;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .hero button {
+      background: #00c6ff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .hero button:hover {
+      background: #00a3d9;
+    }
+
+    section {
+      padding: 60px 20px;
+      background: #fff;
+      color: #000;
+      text-align: center;
+    }
+
+    section h3 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #f4f4f4;
+      padding: 30px;
+      width: 280px;
+      border-radius: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #111;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Tino</h1>
+
+  <header>
+    <h1>Projecto Tino</h1>
+    <a href="#">Contato</a>
+  </header>
+
+  <div class="hero">
+    <h2>Bem-vindo ao meu Projecto</h2>
+    <p>Esta é uma landing page simples, moderna e pronta para publicar no GitHub Pages.</p>
+    <button>Começar Agora</button>
+  </div>
+
+  <section>
+    <h3>O que você vai encontrar</h3>
+
+    <div class="cards">
+      <div class="card">
+        <h4>🚀 Rápido</h4>
+        <p>Carregamento leve e simples.</p>
+      </div>
+
+      <div class="card">
+        <h4>📱 Responsivo</h4>
+        <p>Funciona no celular e no computador.</p>
+      </div>
+
+      <div class="card">
+        <h4>💻 GitHub Pages</h4>
+        <p>Pronto para publicar gratuitamente.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 - Projecto Tino | Criado por você
+  </footer>
+
 </body>
 </html>
+  
